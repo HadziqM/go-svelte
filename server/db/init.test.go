@@ -1,0 +1,23 @@
+package db
+
+import(
+  "strings"
+  "database/sql"
+  "github.com/hadziqm/go-svelte/logger"
+)
+
+
+func Category_all(dbase *sql.DB){
+  rows,err := dbase.Query("SELECT * FROM category")
+  logger.Fatal(err,"successfully fetch")
+  defer rows.Close()
+  for rows.Next(){
+    var slug string
+    var name string
+    err = rows.Scan(&slug,&name)
+    logger.Fatal(err,"succesfully parse result query")
+    res := []string{"result:","name is",name,"with slug",slug}
+    logger.Print(strings.Join(res," "))
+  }
+}
+
