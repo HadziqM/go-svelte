@@ -8,6 +8,29 @@ import (
 	"github.com/hadziqm/go-svelte/logger"
 )
 
+type CategoryList struct{
+  Data struct {
+    Categories struct {
+      Nodes []struct {
+        Name string `json:"name"`
+        Slug string `json:"slug"`
+        Posts struct {
+          Nodes []struct {
+            Title string `json:"title"`
+            Slug string `json:"slug"`
+            Content string `json:"content"`
+            Date string `json:"date"`
+            FeaturedImage struct {
+              Node struct {
+                Link string `json:"link"`
+              } `json:"node"`
+            } `json:"featuredImage"`
+          } `json:"nodes"`
+        } `json:"posts"`
+      } `json:"nodes"`
+    } `json:"categories"`
+  } `json:"data"`
+}
 
 func getResponse(web string,body string) http.Response {
   pbody,err := json.Marshal(map[string]string{
@@ -15,7 +38,7 @@ func getResponse(web string,body string) http.Response {
     "variables":"",
   })
   logger.Ignore(err)
-  res,err := http.Post(web,"apllication/json",bytes.NewBuffer(pbody))
+  res,err := http.Post(web,"application/json",bytes.NewBuffer(pbody))
   return *res
 }
 func readBody(res http.Response) string{
@@ -23,7 +46,7 @@ func readBody(res http.Response) string{
   logger.Ignore(err)
   return string(bod)
 }
-func GetCategories(web string){
+func GetCategories(web string) CategoryList{
   queries := `{
   categories(where: {orderby: NAME}) {
     nodes {
@@ -46,5 +69,8 @@ func GetCategories(web string){
     }
   }`
   res := getResponse(web,queries)
-  logger.Print(readBody(res))
+  var categories CategoryList
+  err := json.NewDecoder(res.Body).Decode(&categories)
+  logger.Fatal(err,"successfully parsed")
+  return categories
 }
