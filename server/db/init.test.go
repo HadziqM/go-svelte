@@ -9,13 +9,13 @@ import(
 
 func Category_all(dbase *sql.DB){
   rows,err := dbase.Query("SELECT * FROM category")
-  logger.Fatal(err,"successfully fetch")
+  logger.Fatal(err,"error on db fetch queries category","successfully fetch")
   defer rows.Close()
   for rows.Next(){
     var slug string
     var name string
     err = rows.Scan(&slug,&name)
-    logger.Fatal(err,"succesfully parse result query")
+    logger.Fatal(err,"error on db parsing result to type","succesfully parse result query")
     res := []string{"result:","name is",name,"with slug",slug}
     logger.Print(strings.Join(res," "))
   }

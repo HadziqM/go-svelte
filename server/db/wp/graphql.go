@@ -37,13 +37,13 @@ func getResponse(web string,body string) http.Response {
     "query":body,
     "variables":"",
   })
-  logger.Ignore(err)
+  logger.Ignore(err,"error on wp post respons graphql")
   res,err := http.Post(web,"application/json",bytes.NewBuffer(pbody))
   return *res
 }
 func readBody(res http.Response) string{
   bod,err := ioutil.ReadAll(res.Body)
-  logger.Ignore(err)
+  logger.Ignore(err,"error on wp parsing response body")
   return string(bod)
 }
 func GetCategories(web string) CategoryList{
@@ -71,6 +71,6 @@ func GetCategories(web string) CategoryList{
   res := getResponse(web,queries)
   var categories CategoryList
   err := json.NewDecoder(res.Body).Decode(&categories)
-  logger.Fatal(err,"successfully parsed")
+  logger.Fatal(err,"error on wp parsing body json to type CategoryList","successfully parsed")
   return categories
 }

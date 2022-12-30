@@ -3,15 +3,16 @@ package logger
 import "log"
 
 
-
-func Fatal(err error,exp string ) {
+func Fatal(err error, on string, exp string) {
   if err!= nil{
+    log.Printf(on)
     log.Fatal(err)
   }
   log.Printf(exp)
 }
-func Ignore(err error)  {
+func Ignore(err error, on string)  {
   if err != nil{
+    log.Printf(on)
     log.Println(err)
   }
 }
