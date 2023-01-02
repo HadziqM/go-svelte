@@ -71,6 +71,6 @@ func GetCategories(web string) CategoryList{
   res := getResponse(web,queries)
   var categories CategoryList
   err := json.NewDecoder(res.Body).Decode(&categories)
-  logger.Fatal(err,"error on wp parsing body json to type CategoryList","successfully parsed")
+  logger.Fatal(err,"error on wp parsing body json to type CategoryList")
   return categories
 }

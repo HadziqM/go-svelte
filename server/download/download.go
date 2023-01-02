@@ -17,9 +17,8 @@ func Download(url string) error {
   if res.StatusCode != 200{
     return errors.New("request error")
   }
-  split := strings.Split(url, "/")
-  path := "../images/"+split[len(split)-1]
-  file,err := os.Create(path)
+  path := splitName(url)
+    file,err := os.Create(path)
   if err != nil{
     return err
   }
@@ -29,4 +28,21 @@ func Download(url string) error {
     return err
   }
   return nil
+}
+func splitName(url string)string{
+  split := strings.Split(url, "/")
+  return "../images/"+split[len(split)-1]
+}
+func DownloadOpen(url string) error{
+  path := splitName(url)
+  _,err := os.Open(path)
+  if err != nil{
+    return Download(url)
+  }else{
+    err := os.Remove(path)
+    if err != nil{
+      return err
+    }
+    return Download(url)
+  }
 }

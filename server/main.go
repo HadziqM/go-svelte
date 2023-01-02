@@ -25,7 +25,7 @@ func main() {
 
   //sqlite init
   dbase,err := sql.Open("sqlite3","./test.db")
-  logger.Fatal(err,"error on main connect db","sucessfully connect to database")
+  logger.Fatal(err,"error on main connect db")
   defer dbase.Close()
 
   if conf.Init{
