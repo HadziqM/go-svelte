@@ -23,11 +23,15 @@ func Download(url string) error {
     return err
   }
   defer file.Close()
-  _,err = io.Copy(file,res.Body)
-  if err != nil{
-    return err
+  _,err2 := io.Copy(file,res.Body)
+  if err2 != nil{
+    return err2
   }
   return nil
+}
+func GetName(url string)string{
+  split := strings.Split(url,"/")
+  return split[len(split)-1]
 }
 func splitName(url string)string{
   split := strings.Split(url, "/")

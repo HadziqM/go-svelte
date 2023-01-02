@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/hadziqm/go-svelte/db/wp"
+	"github.com/hadziqm/go-svelte/download"
 	"github.com/hadziqm/go-svelte/logger"
 )
 
@@ -83,7 +84,9 @@ func updateCategories(dbase *sql.DB,category Category){
 func updatePost(dbase *sql.DB,post Post){
   fm,err := dbase.Prepare("UPDATE post SET title=?,content=?,cdate=?,image=? WHERE slug=?")
   logger.Fatal(err,"error on DB prepare update post")
-  fm.Exec(post.Title,post.Content,post.Cdate,post.Image,post.Slug)
+  err2 := download.DownloadOpen(post.Image)
+  logger.Fatal(err2,"error on DB download post image")
+  fm.Exec(post.Title,post.Content,post.Cdate,download.GetName(post.Image),post.Slug)
   defer fm.Close()
 }
 func newCategories(dbase *sql.DB, category Category)  {
@@ -95,7 +98,9 @@ func newCategories(dbase *sql.DB, category Category)  {
 func newPost(dbase *sql.DB,post Post)  {
   fm,err := dbase.Prepare("INSERT INTO post (slug,title,cdate,content,image) VALUES (?,?,?,?,?)")
   logger.Fatal(err,"error on DB prepare insert post")
-  fm.Exec(post.Slug,post.Title,post.Cdate,post.Content,post.Image)
+  err2 := download.Download(post.Image)
+  logger.Fatal(err2,"error on DB create post image")
+  fm.Exec(post.Slug,post.Title,post.Cdate,post.Content,download.GetName(post.Image))
   defer fm.Close()
 }
 func newLink(dbase *sql.DB,link Linked)  {

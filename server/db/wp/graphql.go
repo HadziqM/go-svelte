@@ -46,7 +46,13 @@ func readBody(res http.Response) string{
   logger.Ignore(err,"error on wp parsing response body")
   return string(bod)
 }
-func GetCategories(web string) CategoryList{
+func parseJson(res http.Response) CategoryList{
+  var categories CategoryList
+  err := json.NewDecoder(res.Body).Decode(&categories)
+  logger.Fatal(err,"error on wp parsing body json to type CategoryList")
+  return categories
+}
+func getCategoriesRaw(web string) http.Response{
   queries := `{
   categories(where: {orderby: NAME}) {
     nodes {
@@ -68,9 +74,9 @@ func GetCategories(web string) CategoryList{
       }
     }
   }`
-  res := getResponse(web,queries)
-  var categories CategoryList
-  err := json.NewDecoder(res.Body).Decode(&categories)
-  logger.Fatal(err,"error on wp parsing body json to type CategoryList")
-  return categories
+  return getResponse(web,queries)
+}
+func GetCategory(web string) CategoryList{
+  res := getCategoriesRaw(web)
+  return parseJson(res)
 }

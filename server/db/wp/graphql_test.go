@@ -1,30 +1,24 @@
 package wp
 
-import "github.com/hadziqm/go-svelte/logger"
+import (
+	"fmt"
+	"reflect"
+	"testing"
+)
 
-
-func GetTestCategories(web string){
-  queries := `{
-  categories(where: {orderby: NAME}) {
-    nodes {
-      name
-      slug
-      posts {
-        nodes {
-          slug
-          title
-          content
-          featuredImage {
-            node {
-              link
-            }
-          }
-          date
-        }
-        }
-      }
-    }
-  }`
-  res := getResponse(web,queries)
-  logger.Print(readBody(res))
+var web string = "https://masjidmoedhararifin.com/graphql"
+func TestGetRaw(t *testing.T)  {
+  queried := readBody(getCategoriesRaw(web))
+  if reflect.TypeOf(queried).String() != "string"{
+    t.Fatal("response invalid")
+  }
+  fmt.Println(queried)
+}
+func TestGetStruct(t *testing.T){
+  structured := GetCategory(web)
+  name := structured.Data.Categories.Nodes[0].Name
+  if reflect.TypeOf(name).String() != "string"{
+    t.Fatal("result invalid")
+  }
+  fmt.Printf("first category item is %s",name)
 }
