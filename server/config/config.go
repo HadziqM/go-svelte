@@ -15,7 +15,7 @@ type Conf struct{
 }
 
 func LoadConf() Conf {
-  config,err := os.Open("./config.json")
+  config,err := os.Open("../config.json")
   logger.Fatal(err,"error on config opening file")
   defer config.Close()
   jsonParser := json.NewDecoder(config)

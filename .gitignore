@@ -1,3 +1,5 @@
 images
 server/images
 server/test.db
+server/main
+config.json
