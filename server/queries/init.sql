@@ -13,6 +13,7 @@ CREATE TABLE post (
   title TEXT NOT NULL,
   cdate TEXT,
   content TEXT,
+  image TEXT,
   views INTEGER DEFAULT(0),
 );
 CREATE TABLE linked(

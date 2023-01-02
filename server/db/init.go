@@ -15,6 +15,7 @@ type Post struct{
   Title string `json:"title"`
   Cdate string `json:"cdate"`
   Content string `json:"content"`
+  Image string `json:"image"`
   Views uint `json:"views"`
 }
 type Linked struct{
@@ -43,11 +44,11 @@ type Donate struct{
     
 func Init(dbase *sql.DB)  {
   _,err := dbase.Exec(get_start())
-  logger.Fatal(err,"error on db executing init queries","success create table")
+  logger.Fatal(err,"error on db executing init queries")
 }
 func get_start() string {
   file,err := os.ReadFile("./queries/init.sql")
-  logger.Fatal(err,"error on db read init.sql file","succesfully read file")
+  logger.Fatal(err,"error on db read init.sql file")
   return string(file)
 }
 
