@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS linked;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS infaq;
 DROP TABLE IF EXISTS donate;
@@ -12,12 +13,17 @@ CREATE TABLE post (
   title TEXT NOT NULL,
   cdate TEXT,
   content TEXT,
-  category TEXT,
   views INTEGER DEFAULT(0),
-  FOREIGN KEY(category) REFERENCES category(slug)
 );
+CREATE TABLE linked(
+  category
+  post
+  PRIMARY KEY(category,post)
+  FOREIGN KEY(category) REFERENCES category(slug)
+  FOREIGN KEY(post) REFERENCES post(slug)
+)
 CREATE TABLE comments (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   content TEXT,
   photo TEXT,

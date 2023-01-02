@@ -1,5 +1,5 @@
 {
-  "init":false,
+  "init":true,
   "frontend":"http://localhost:3000",
   "wordpress":"https://masjidmoedhararifin.com/graphql"
 }

@@ -15,8 +15,11 @@ type Post struct{
   Title string `json:"title"`
   Cdate string `json:"cdate"`
   Content string `json:"content"`
-  Category string `json:"category"`
   Views uint `json:"views"`
+}
+type Linked struct{
+  Post string `json:"post"`
+  Category string `json:"category"`
 }
 type Comment struct{
   Id uint `json:"id"`
