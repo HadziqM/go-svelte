@@ -9,11 +9,11 @@ import (
 )
 
 func Update(dbase *sql.DB,web string)  {
-  raw := wp.GetCategories(web)
+  raw := wp.GetCategory(web)
   category := getCategory(dbase)
   post := getPost(dbase)
   //truncate link table here
-  Truncate(dbase,"linked")
+  Truncate(dbase)
   for _,j := range raw.Data.Categories.Nodes{
     var is_new bool = true
     for _,k := range category{
@@ -84,8 +84,7 @@ func updateCategories(dbase *sql.DB,category Category){
 func updatePost(dbase *sql.DB,post Post){
   fm,err := dbase.Prepare("UPDATE post SET title=?,content=?,cdate=?,image=? WHERE slug=?")
   logger.Fatal(err,"error on DB prepare update post")
-  err2 := download.DownloadOpen(post.Image)
-  logger.Fatal(err2,"error on DB download post image")
+  download.DownloadOpen(post.Image)
   fm.Exec(post.Title,post.Content,post.Cdate,download.GetName(post.Image),post.Slug)
   defer fm.Close()
 }
@@ -98,8 +97,7 @@ func newCategories(dbase *sql.DB, category Category)  {
 func newPost(dbase *sql.DB,post Post)  {
   fm,err := dbase.Prepare("INSERT INTO post (slug,title,cdate,content,image) VALUES (?,?,?,?,?)")
   logger.Fatal(err,"error on DB prepare insert post")
-  err2 := download.Download(post.Image)
-  logger.Fatal(err2,"error on DB create post image")
+  download.Download(post.Image)
   fm.Exec(post.Slug,post.Title,post.Cdate,post.Content,download.GetName(post.Image))
   defer fm.Close()
 }
@@ -109,9 +107,7 @@ func newLink(dbase *sql.DB,link Linked)  {
   fm.Exec(link.Post,link.Category)
   defer fm.Close()
 }
-func Truncate(dbase *sql.DB,table string)  {
-  fm,err := dbase.Prepare("DELETE FROM ?")
-  logger.Fatal(err,"error on DB prepare truncate")
-  fm.Exec(table)
-  defer fm.Close()
+func Truncate(dbase *sql.DB)  {
+  _,err := dbase.Exec("DELETE FROM linked")
+  logger.Fatal(err,"error on DB truncate")
 }

@@ -1,5 +1,6 @@
 images
 server/images
-server/test.db
+server/sqlite.db
 server/main
+server/db/test.db
 config.json

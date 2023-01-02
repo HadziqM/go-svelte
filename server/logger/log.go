@@ -18,3 +18,6 @@ func Ignore(err error, on string)  {
 func Print(exp string)  {
   log.Printf(exp)
 }
+func FatalNE(on string) {
+  log.Fatal(on)
+}

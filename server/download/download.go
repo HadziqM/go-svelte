@@ -1,33 +1,34 @@
 package download
 
 import (
-	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/hadziqm/go-svelte/logger"
 )
 
-func Download(url string) error {
+func Download(url string) {
+  fmt.Println("downloading from:",url)
   res,err := http.Get(url)
-  if err != nil{
-    return err
-  }
+  logger.Fatal(err,"error on download http request")
   defer res.Body.Close()
   if res.StatusCode != 200{
-    return errors.New("request error")
+    logger.FatalNE("error on download bad status code")
   }
   path := splitName(url)
-    file,err := os.Create(path)
+  file,err := os.Create(path)
   if err != nil{
-    return err
+    err2 := os.MkdirAll("../images",os.ModePerm)
+    res,_ := os.Create(path)
+    file = res
+    logger.Fatal(err2,"error on download cant create dir")
   }
   defer file.Close()
   _,err2 := io.Copy(file,res.Body)
-  if err2 != nil{
-    return err2
-  }
-  return nil
+  logger.Fatal(err2,"error on download cant copy to file")
 }
 func GetName(url string)string{
   split := strings.Split(url,"/")
@@ -37,16 +38,14 @@ func splitName(url string)string{
   split := strings.Split(url, "/")
   return "../images/"+split[len(split)-1]
 }
-func DownloadOpen(url string) error{
+func DownloadOpen(url string){
   path := splitName(url)
   _,err := os.Open(path)
   if err != nil{
-    return Download(url)
+    Download(url)
   }else{
     err := os.Remove(path)
-    if err != nil{
-      return err
-    }
-    return Download(url)
+    logger.Fatal(err,"error on download cant delete file")
+    Download(url)
   }
 }

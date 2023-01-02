@@ -22,7 +22,7 @@ type CategoryList struct{
             Date string `json:"date"`
             FeaturedImage struct {
               Node struct {
-                Link string `json:"link"`
+                Link string `json:"sourceUrl"`
               } `json:"node"`
             } `json:"featuredImage"`
           } `json:"nodes"`
@@ -65,7 +65,7 @@ func getCategoriesRaw(web string) http.Response{
           content
           featuredImage {
             node {
-              link
+              sourceUrl
             }
           }
           date

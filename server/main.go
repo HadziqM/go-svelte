@@ -24,7 +24,7 @@ func main() {
   api.SetCors(App,conf.Frontend)
 
   //sqlite init
-  dbase,err := sql.Open("sqlite3","./test.db")
+  dbase,err := sql.Open("sqlite3","./sqlite.db")
   logger.Fatal(err,"error on main connect db")
   defer dbase.Close()
 

@@ -14,15 +14,15 @@ CREATE TABLE post (
   cdate TEXT,
   content TEXT,
   image TEXT,
-  views INTEGER DEFAULT(0),
+  views INTEGER DEFAULT(0)
 );
 CREATE TABLE linked(
-  category
-  post
-  PRIMARY KEY(category,post)
-  FOREIGN KEY(category) REFERENCES category(slug)
+  category,
+  post,
+  PRIMARY KEY(category,post),
+  FOREIGN KEY(category) REFERENCES category(slug),
   FOREIGN KEY(post) REFERENCES post(slug)
-)
+);
 CREATE TABLE comments (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
@@ -44,4 +44,3 @@ CREATE TABLE donate (
   amount INTEGER DEFAULT(0),
   FOREIGN KEY(post) REFERENCES post(slug)
 );
-
