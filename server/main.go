@@ -19,9 +19,10 @@ func main() {
   conf := config.LoadConf()
 
   // fiber init
-  App := fiber.New()
-  api.Index(App)
-  api.SetCors(App,conf.Frontend)
+  app := fiber.New()
+  api.Index(app)
+  api.Dual(app)
+  api.SetCors(app,conf.Frontend)
 
   //sqlite init
   dbase,err := sql.Open("sqlite3","./sqlite.db")
@@ -32,5 +33,5 @@ func main() {
     db.Init(dbase)
   }
 
-  log.Fatal(App.Listen(":8000"))
+  log.Fatal(app.Listen(":8000"))
 }

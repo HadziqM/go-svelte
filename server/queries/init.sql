@@ -29,6 +29,7 @@ CREATE TABLE comments (
   content TEXT,
   photo TEXT,
   post TEXT,
+  cdate INT,
   FOREIGN KEY(post) REFERENCES post(slug)
 );
 CREATE TABLE infaq (

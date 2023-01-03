@@ -28,6 +28,7 @@ type Comment struct{
   Content string `json:"content"`
   Photo string `json:"photo"`
   Post string `json:"post"`
+  Cdate uint `json:"cdate"`
 }
 type Infaq struct{
   Post string `json:"post"`
@@ -40,7 +41,11 @@ type Donate struct{
   Name string `json:"name"`
   Amount uint `json:"amount"`
 }
-
+func DbConn() sql.DB {
+  dbase,err := sql.Open("sqlite3","../sqlite.db")
+  logger.Fatal(err,"error on db opening a database")
+  return *dbase
+}
     
 func Init(dbase *sql.DB)  {
   _,err := dbase.Exec(get_start())

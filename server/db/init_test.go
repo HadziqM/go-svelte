@@ -8,8 +8,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 )
-
-//crud test and squeries file test
+//crud test and queries file test
 
 func getDB() sql.DB{
   dbase,err := sql.Open("sqlite3","./test.db")
