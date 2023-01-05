@@ -22,3 +22,17 @@ func TestQueries(t *testing.T) {
   res := GetIndex(&dbase)
   fmt.Println(res)
 }
+func TestView(t *testing.T) {
+  res := GetSpecificPost(&dbase,"youtube")
+  fmt.Println(res)
+  row := dbase.QueryRow("SELECT views FROM post WHERE slug='youtube'")
+  var view uint
+  err := row.Scan(&view)
+  if err!=nil{
+    t.Fatal("error query")
+  }
+  fmt.Println("post view is now :",view)
+  if view != 1{
+    t.Fatal("view isnt incremented")
+  }
+}
