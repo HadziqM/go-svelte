@@ -17,12 +17,9 @@ CREATE TABLE post (
   views INTEGER DEFAULT(0)
 );
 CREATE TABLE linked(
-  category,
-  post,
-  PRIMARY KEY(category,post),
-  FOREIGN KEY(category) REFERENCES category(slug),
-  FOREIGN KEY(post) REFERENCES post(slug)
-);
+  category TEXT,
+  post TEXT,
+  PRIMARY KEY(category,post));
 CREATE TABLE comments (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,

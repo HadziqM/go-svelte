@@ -104,7 +104,7 @@ func newPost(dbase *sql.DB,post Post)  {
 func newLink(dbase *sql.DB,link Linked)  {
   fm,err := dbase.Prepare("INSERT INTO linked (post,category) VALUES (?,?)")
   logger.Fatal(err,"error on DB prepare insert linked")
-  fm.Exec(link.Post,link.Category)
+  fm.Exec(link.Category,link.Post)
   defer fm.Close()
 }
 func Truncate(dbase *sql.DB)  {

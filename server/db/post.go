@@ -7,12 +7,13 @@ import (
 	"github.com/hadziqm/go-svelte/logger"
 )
 
-var noInfaq string = "SELECT post.slug AS Post,title,cdate,image FROM linked INNER JOIN post ON post.slug = linked.post INNER JOIN category ON category.slug = linked.category WHERE category.slug != 'infaq' "
-var highlightOnly string = "SELECT post.slug AS Post,title,cdate,image FROM linked INNER JOIN post ON post.slug = linked.post INNER JOIN category ON category.slug = linked.category WHERE category.slug = 'highlight' ORDER BY cdate DESC LIMIT 5"
+var noInfaq string = "SELECT a.slug,title,cdate,image FROM post a LEFT JOIN linked b ON a.slug = b.post WHERE b.category!='infaq' "
+var highlightOnly string = "SELECT a.slug,title,cdate,image FROM post a LEFT JOIN linked b ON a.slug = b.post WHERE b.category = 'headline' ORDER BY cdate DESC LIMIT 5"
 
 func postQueries(dbase *sql.DB,orderby string) []Post {
   fmt.Println("invoked")
   query := noInfaq + orderby + " LIMIT 5"
+  fmt.Println(query)
   rows,err := dbase.Query(query)
   logger.Fatal(err,"error on DB at query post index")
   defer rows.Close()
@@ -23,6 +24,7 @@ func postQueries(dbase *sql.DB,orderby string) []Post {
     fmt.Println(post)
     out = append(out, post)
   }
+  fmt.Println("done")
   return out
 }
 func onlyHightlight(dbase *sql.DB) []Post {
