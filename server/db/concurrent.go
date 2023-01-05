@@ -56,7 +56,7 @@ func GetIndex(dbase *sql.DB) IndexOut {
 func GetSpecificPost(dabase *sql.DB,slug string) PostOut{
   post := getConcurrentPage(getSpecificPost,dabase,slug)
   comment := getConcurrentComment(getPostComment,dabase,slug)
-  go addViewCount(dabase,slug)
+  addViewCount(dabase,slug)
   out := PostOut{
     Post: <-post,
     Comment: <-comment,
