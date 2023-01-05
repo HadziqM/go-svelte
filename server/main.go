@@ -14,6 +14,12 @@ import (
 )
 
 
+func apiRoute(c *fiber.App){
+  c.Get("api/post",api.GetIndex)
+  c.Get("api/post/:slug",api.GetPost)
+}
+
+
 func main() {
   //load config
   conf := config.LoadConf()
@@ -21,8 +27,8 @@ func main() {
   // fiber init
   app := fiber.New()
   api.Index(app)
-  api.Dual(app)
   api.SetCors(app,conf.Frontend)
+  apiRoute(app)
 
   //sqlite init
   dbase,err := sql.Open("sqlite3","./sqlite.db")
@@ -31,6 +37,7 @@ func main() {
 
   if conf.Init{
     db.Init(dbase)
+    db.Update(dbase,conf.Wordpress)
   }
 
   log.Fatal(app.Listen(":8000"))

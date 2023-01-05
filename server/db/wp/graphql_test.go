@@ -12,7 +12,6 @@ func TestGetRaw(t *testing.T)  {
   if reflect.TypeOf(queried).String() != "string"{
     t.Fatal("response invalid")
   }
-  fmt.Println(queried)
 }
 func TestGetStruct(t *testing.T){
   structured := GetCategory(web)

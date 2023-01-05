@@ -42,7 +42,7 @@ type Donate struct{
   Amount uint `json:"amount"`
 }
 func DbConn() sql.DB {
-  dbase,err := sql.Open("sqlite3","../sqlite.db")
+  dbase,err := sql.Open("sqlite3","./sqlite.db")
   logger.Fatal(err,"error on db opening a database")
   return *dbase
 }

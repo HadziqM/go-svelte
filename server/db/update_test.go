@@ -19,8 +19,8 @@ func TestUpdate(t *testing.T){
 }
 
 func TestQueries(t *testing.T) {
-  res := GetIndex(&dbase)
-  fmt.Println(res)
+  GetIndex(&dbase)
+  fmt.Println("index queried")
 }
 func TestView(t *testing.T) {
   res := GetSpecificPost(&dbase,"youtube")
