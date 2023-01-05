@@ -1,6 +1,8 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type IndexOut struct{
   Highlight []Post `json:"highlight"`

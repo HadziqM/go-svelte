@@ -17,3 +17,11 @@ func TestUpdate(t *testing.T){
     fmt.Println("name of agenda slug is :",name)
   }
 }
+
+func TestQueries(t *testing.T) {
+  res := GetIndex(&dbase)
+  fmt.Println(res)
+}
+func TestConcurrent(t *testing.T) {
+  postQueries(&dbase,"ORDER BY views DESC")
+ }
